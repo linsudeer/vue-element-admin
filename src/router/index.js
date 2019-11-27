@@ -384,7 +384,41 @@ export const asyncRoutes = [
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
+
+  // 开始自己的页面
+  {
+    path: '/auth',
+    component: Layout,
+    redirect: '/auth/resource',
+    alwaysShow: true, // will always show the root menu
+    name: 'Auth',
+    meta: {
+      title: '权限管理',
+      icon: 'lock',
+      roles: ['admin', 'editor', 'user'] // you can set roles in root nav
+    },
+    children: [
+      {
+        path: '/resource',
+        component: () => import('@/views/manager/resource'),
+        name: 'Resource',
+        meta: {
+          title: '资源管理',
+          roles: ['admin', 'user'] // or you can only set roles in sub nav
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/manager/role'),
+        name: '/role',
+        meta: {
+          title: '角色管理',
+          roles: ['admin', 'user']
+        }
+      }
+    ]
+  }
 ]
 
 const createRouter = () => new Router({
