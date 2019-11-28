@@ -79,7 +79,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -91,23 +91,11 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        meta: { title: '文档手册', icon: 'documentation', affix: true }
       }
     ]
   },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
-      }
-    ]
-  },
+
   {
     path: '/profile',
     component: Layout,
@@ -117,7 +105,7 @@ export const constantRoutes = [
       {
         path: 'index',
         component: () => import('@/views/profile/index'),
-        name: 'Profile',
+        name: '个人中心',
         meta: { title: 'Profile', icon: 'user', noCache: true }
       }
     ]
@@ -172,8 +160,28 @@ export const asyncRoutes = [
   },
 
   {
+    path: '/guide',
+    component: Layout,
+    redirect: '/guide/index',
+    meta: {
+      roles: ['admin']
+    },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/guide/index'),
+        name: '引导页',
+        meta: { title: 'Guide', icon: 'guide', noCache: true }
+      }
+    ]
+  },
+
+  {
     path: '/icon',
     component: Layout,
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'index',
@@ -197,7 +205,8 @@ export const asyncRoutes = [
     name: 'Example',
     meta: {
       title: 'Example',
-      icon: 'example'
+      icon: 'example',
+      roles: ['admin']
     },
     children: [
       {
@@ -225,6 +234,9 @@ export const asyncRoutes = [
   {
     path: '/tab',
     component: Layout,
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'index',
@@ -242,7 +254,8 @@ export const asyncRoutes = [
     name: 'ErrorPages',
     meta: {
       title: 'Error Pages',
-      icon: '404'
+      icon: '404',
+      roles: ['admin']
     },
     children: [
       {
@@ -263,6 +276,9 @@ export const asyncRoutes = [
   {
     path: '/error-log',
     component: Layout,
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'log',
@@ -280,7 +296,8 @@ export const asyncRoutes = [
     name: 'Excel',
     meta: {
       title: 'Excel',
-      icon: 'excel'
+      icon: 'excel',
+      roles: ['admin']
     },
     children: [
       {
@@ -316,13 +333,13 @@ export const asyncRoutes = [
     redirect: '/zip/download',
     alwaysShow: true,
     name: 'Zip',
-    meta: { title: 'Zip', icon: 'zip' },
+    meta: { title: 'Zip', icon: 'zip', roles: ['admin'] },
     children: [
       {
         path: 'download',
         component: () => import('@/views/zip/index'),
         name: 'ExportZip',
-        meta: { title: 'Export Zip' }
+        meta: { title: 'Export Zip', roles: ['admin'] }
       }
     ]
   },
@@ -331,6 +348,9 @@ export const asyncRoutes = [
     path: '/pdf',
     component: Layout,
     redirect: '/pdf/index',
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'index',
@@ -349,6 +369,9 @@ export const asyncRoutes = [
   {
     path: '/theme',
     component: Layout,
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'index',
@@ -362,6 +385,9 @@ export const asyncRoutes = [
   {
     path: '/clipboard',
     component: Layout,
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'index',
@@ -375,6 +401,9 @@ export const asyncRoutes = [
   {
     path: 'external-link',
     component: Layout,
+    meta: {
+      roles: ['admin']
+    },
     children: [
       {
         path: 'https://github.com/PanJiaChen/vue-element-admin',
@@ -382,10 +411,6 @@ export const asyncRoutes = [
       }
     ]
   },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true },
-
   // 开始自己的页面
   {
     path: '/auth',
@@ -418,7 +443,43 @@ export const asyncRoutes = [
         }
       }
     ]
-  }
+  },
+
+  {
+    path: '/article',
+    component: Layout,
+    redirect: '/article/list',
+    name: 'Aricle',
+    meta: {
+      title: '文章管理',
+      icon: 'example',
+      roles: ['admin', 'user']
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/manager/article/create'),
+        name: 'CreateArticle',
+        meta: { title: '创建文章', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id(\\d+)',
+        component: () => import('@/views/manager/article/edit'),
+        name: 'EditArticle',
+        meta: { title: '编辑文章', noCache: true, activeMenu: '/manager/article/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/manager/article/list'),
+        name: 'ArticleList',
+        meta: { title: '文章列表', icon: 'list' }
+      }
+    ]
+  },
+
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
